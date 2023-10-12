@@ -1,0 +1,78 @@
+import './App.css';
+import 'styled-components'
+import DataTable, {createTheme} from 'react-data-table-component';
+import React, {useState, useEffect} from 'react';
+
+const App = () => {
+  // conf hooks
+  const [users, setUsers] = useState( [] )
+
+  // mostrar os dados com fetch
+  const URL = 'https://gorest.co.in/public/v2/users'
+  const showData = async () => {
+    const response = await fetch(URL)
+    const data     = await response.json()
+    //console.log(data)
+    setUsers(data)
+  }
+
+  useEffect( ()=>{
+    showData()
+  }, [])
+
+  // conf colunas da datable
+  const columns = [
+    {
+      name: 'ID',
+      selector: row => row.id
+    },
+    {
+      name: 'NAME',
+      selector: row => row.name
+    },
+    {
+      name: 'E-MAIL',
+      selector: row => row.email
+    },
+
+  ]
+
+   //personalizar temas
+  //  createTheme('custom', {
+  //   text: {
+  //     primary: '#268bd2',
+  //     secondary: '#2aa198',
+  //   },
+  //   background: {
+  //     default: '#002b36',
+  //   },
+  //   context: {
+  //     background: '#cb4b16',
+  //     text: '#FFFFFF',
+  //   },
+  //   divider: {
+  //     default: '#073642',
+  //   },
+  //   action: {
+  //     button: 'rgba(0,0,0,.54)',
+  //     hover: 'rgba(0,0,0,.08)',
+  //     disabled: 'rgba(0,0,0,.12)',
+  //   },
+  // }, 'dark'); 
+  
+  // mostrar os dados no datatable
+
+  return (
+    <div className="App">
+      <h1>React DataTable</h1>
+      <DataTable 
+      columns={columns}
+      data={users}
+      //theme='custom' //habilitar esta linea y descomentar createTheme()
+      pagination
+     />
+    </div>
+  );
+}
+
+export default App;
